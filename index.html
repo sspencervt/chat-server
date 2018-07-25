@@ -39,6 +39,8 @@
         let chatLog = document.getElementById('chat-log');
         let refreshButton = document.getElementById('refresh');
 
+        let room = 'general';
+
         chatForm.addEventListener('submit', (event) => {
             let inputElement = chatForm.querySelector('input[name=body]')
             let message = inputElement.value;

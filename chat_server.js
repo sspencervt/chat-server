@@ -1,17 +1,24 @@
 //setup requirements
 const http = require('http');
 const mime = require('mime-types');
-const Assistant = require('./assistant')
 const port = process.env.PORT || 5000;
 
-let messages = [];
+const Assistant = require('./lib/assistant')
+// const Message = require('./lib/message.js')
+const House = require('./lib/house.js')
+const Room = require('./lib/room.js')
+
+
+// let messages = [];
+let chatHouse = new House()
+// let messages = new Message()
 
 http.createServer(handleRequest).listen(port);
 console.log("listening on port:" + port);
 
 function handleRequest(request, response) {
     console.log('request.url = ' + request.url);
-
+    
     let assistant = new Assistant(request, response);
     let path = assistant.path;
 
@@ -19,7 +26,13 @@ function handleRequest(request, response) {
     try {
         if (path === '/') {
             assistant.sendFile('index.html');
-        } else if (path === '/chat') {
+        } else {
+            let [base, room] = path.slice(1).split('/')
+            if (path === '/chat' && )
+        }
+        
+        
+        if (path === '/chat') {
             console.log('Parsing the POST');
             if (request.method === 'GET') {
                 console.log('Parsing the GET')
@@ -33,6 +46,9 @@ function handleRequest(request, response) {
                         body: params.body,
                         when: new Date().toISOString()
                     }
+
+                    chatHouse.sendMessageToRoom(room, message.body)
+
                     messages.push(message);
                     let data = JSON.stringify(messages);
                     let type = mime.lookup('json');
